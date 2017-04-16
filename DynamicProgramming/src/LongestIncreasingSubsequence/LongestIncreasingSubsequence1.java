@@ -4,49 +4,63 @@ import java.util.Stack;
 
 public class LongestIncreasingSubsequence1 {
 	
-	public void computeLongestIncreasingSubsequence(int[] arr) {
-		int temp[] = new int[arr.length];
-		int maxLength = 1;
+	public int computeLongestIncreasingSubsequence(int[] input) {
+		
+		if (input == null|| input.length == 0) {
+		    return 0;	
+		}
+		
+		if (input.length == 1){
+			return 1;
+		}
+		
+		int[] temp = new int[input.length];
+		int[] result = new int[input.length];
+		
+		int max = 1;
 		int maxIndex = 0;
 
-		for (int k = 0; k < arr.length; k++) {
-			temp[k] = 1;
+		for (int i = 0; i < input.length; i++) {
+			temp[i] = 1;
+			result[i] = i;
 		}
 
-		for (int i = 1; i < arr.length; i++) {
+		for (int i = 1; i < input.length; i++) {
 			for (int j = 0; j < i; j++) {
-				if (arr[j] < arr[i]) {
-					int x = temp[j] + 1; // subsequence of j + 1 or Math.max(temp[i], temp[j]+1)
-					if (temp[i] < x) {
-						temp[i] = x;
-						if (maxLength < temp[i]) {
-							maxLength = temp[i];
-							maxIndex = i;
+				if (input[j] < input[i]) {
+				         //subsequence of j + 1 or Math.max(temp[i], temp[j]+1)
+					if (temp[i] < temp[j] + 1) {
+						temp[i] = temp[j] + 1;
+						result[i] = j;
+						if (max < temp[i]) {
+							max = temp[i];
+							maxIndex = i;							
 						}
 					}
 				}
 			}
 		}
-		getLongestSubsequence(maxIndex, temp, arr);
+		getLongestSubsequence(maxIndex, max, input, result);
+		
+		return max;
 	}
 	
-	private void getLongestSubsequence(int maxIndex, int[] temp, int[] arr) {	
-		int count = temp[maxIndex];
-		int i = maxIndex;
+	private void getLongestSubsequence(int maxIndex, int max, int[] input, int[] result) {	
+		int index = maxIndex;
+		int parentIndex = result[index];
 		Stack<Integer> stack = new Stack<Integer>();
-		while(count > 0 && i >=0){
-			if (count == temp[i]) {
-				stack.add(arr[i]);
-				count--;
-			}
-			i--;
+		while(index!= parentIndex) {
+			stack.add(input[index]);
+			index = parentIndex;
+			parentIndex = result[index];
 		}
-		
-		System.out.println("Length of Longest increasing subsequence :" + temp[maxIndex]);
+		stack.push(input[index]);
+			
 		//print stack
-		System.out.println("Longest increasing subsequence :");
+		System.out.print("Longest increasing subsequence :");
 		while (!stack.isEmpty()) {
-			System.out.println(stack.pop());
+			System.out.print(stack.pop() + " ");
 		}
+		System.out.print("\n");
 	}
 }
