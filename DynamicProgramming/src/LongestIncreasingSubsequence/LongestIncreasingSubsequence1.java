@@ -5,6 +5,7 @@ package LongestIncreasingSubsequence;
 
 //Time complexity is O(n^2).
 //Space complexity is O(n)
+//https://leetcode.com/problems/longest-increasing-subsequence/#/description
 
 import java.util.Stack;
 
