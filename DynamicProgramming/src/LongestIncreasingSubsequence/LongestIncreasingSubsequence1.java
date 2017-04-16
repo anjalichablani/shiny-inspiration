@@ -1,5 +1,11 @@
 package LongestIncreasingSubsequence;
 
+// Find a subsequence in given array in which the subsequence's elements are 
+// in sorted order, lowest to highest, and in which the subsequence is as long as possible
+
+//Time complexity is O(n^2).
+//Space complexity is O(n)
+
 import java.util.Stack;
 
 public class LongestIncreasingSubsequence1 {
