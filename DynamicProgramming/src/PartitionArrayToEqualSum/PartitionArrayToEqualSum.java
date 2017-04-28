@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 *sum partitions. Partition need not be equal sized. Just equal sum.
 *
 *http://www.geeksforgeeks.org/dynamic-programming-set-18-partition-problem/
+*https://leetcode.com/problems/partition-equal-subset-sum/#/description
 *
 *Following are the two main steps to solve this problem:
 1) Calculate sum of the array. If sum is odd, there can not be two subsets with equal sum, so return false.
@@ -27,7 +28,6 @@ public class PartitionArrayToEqualSum {
 		
 		int total = sum/2;
 		
-		
 		boolean[][] temp = new boolean[input.length+1][total+1];
 		List<Integer> list = computeSubsetSum(input,temp, total);
 		
@@ -42,8 +42,9 @@ public class PartitionArrayToEqualSum {
 		return true;
 	}
 	
-	private List<Integer> computeSubsetSum(int[] input, boolean[][] temp, int total) {
-		
+	//subset sum
+	//https://www.youtube.com/watch?v=s6FhG--P7z0&list=PLrmLmBdmIlpsHaNTPP_jHHDx_os9ItYXr&index=4
+	private List<Integer> computeSubsetSum(int[] input, boolean[][] temp, int total) {	
 		for (int i = 0;i <= input.length; i++) {
 		   	temp[i][0] = true;
 		}
@@ -51,12 +52,13 @@ public class PartitionArrayToEqualSum {
 		int residualValue;
 		for (int i=1; i<=input.length; i++) {
 			for(int j=1; j<=total; j++) {
-				if (j - input[i-1] >=0) {
-					residualValue = j - input[i-1];
-					temp[i][j] = temp[i-1][residualValue];
-				} else {
+				if (j < input[i-1]) {
 					temp[i][j] = temp[i-1][j];
+					continue;
 				}
+				
+			    residualValue = j - input[i-1];
+				temp[i][j] = temp[i-1][j] || temp[i-1][residualValue];	//if one of the value is true			
 			}
 		}
 		
@@ -82,6 +84,7 @@ public class PartitionArrayToEqualSum {
 		return list;
 	}
 	
+	//sum of all elements in the array.. return sum
 	private int computeArraySum(int[] input) {
 		int sum = 0;
 		for(int i =0; i< input.length; i++) {
